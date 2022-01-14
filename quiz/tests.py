@@ -1,12 +1,11 @@
 from django.test import TestCase
-from typing import List
 from .services import QuizResultService
 from .dto import ChoiceDTO, QuestionDTO, QuizDTO, AnswerDTO, AnswersDTO
 
 
 class BaseTestCase(TestCase):
     def setUp(self):
-        choices: List[ChoiceDTO] = [
+        choices: list[ChoiceDTO] = [
             ChoiceDTO(
                 "1-1-1",
                 "An elephant",
@@ -19,7 +18,7 @@ class BaseTestCase(TestCase):
             )
         ]
 
-        questions: List[QuestionDTO] = [
+        questions: list[QuestionDTO] = [
             QuestionDTO(
                 "1-1",
                 "Who is bigger?",
@@ -34,7 +33,7 @@ class BaseTestCase(TestCase):
         )
 
     def test_success_quiz_result(self):
-        answers: List[AnswerDTO] = [
+        answers: list[AnswerDTO] = [
             AnswerDTO(
                 "1-1",
                 ["1-1-1"]
@@ -54,7 +53,7 @@ class BaseTestCase(TestCase):
         self.assertEqual(quiz_result_service.get_result(), 1.00)
 
     def test_failure_quiz_result(self):
-        answers: List[AnswerDTO] = [
+        answers: list[AnswerDTO] = [
             AnswerDTO(
                 "1-1",
                 ["1-1-2"]
