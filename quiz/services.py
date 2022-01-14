@@ -2,6 +2,8 @@ import json
 
 from .dto import QuizDTO, AnswersDTO, QuestionDTO, ChoiceDTO
 
+quiz_memorization = None
+
 
 class QuizResultService:
     def __init__(self, quiz_dto: QuizDTO, answers_dto: AnswersDTO):
@@ -13,13 +15,19 @@ class QuizResultService:
 
 
 def get_quiz_data():
-    raw_quizzes = load_data_quiz_json()
-    return [parse_quiz(**raw_quiz) for raw_quiz in raw_quizzes]
+    load_data_if_not_loaded()
+    return quiz_memorization
+
+
+def load_data_if_not_loaded():
+    if quiz_memorization is None:
+        load_data_quiz_json()
 
 
 def load_data_quiz_json():
     with open('quiz.json') as quiz_json:
-        return json.load(quiz_json)
+        global quiz_memorization
+        quiz_memorization = [parse_quiz(**raw_quiz) for raw_quiz in json.load(quiz_json)]
 
 
 def parse_quiz(uuid, title, questions):
