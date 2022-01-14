@@ -1,0 +1,14 @@
+{
+  "title": "Some cool quiz",
+  "questions": [
+    {
+      "text": "Some cool question text",
+      "choices": [
+        {
+          "text": "Some cool choice text",
+          "is_correct": false
+        }
+      ]
+    }
+  ]
+}
