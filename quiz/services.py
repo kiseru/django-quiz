@@ -2,7 +2,7 @@ import json
 
 from .dto import QuizDTO, AnswersDTO, QuestionDTO, ChoiceDTO
 
-quiz_memorization = None
+quiz_memorization: list[QuizDTO] | None = None
 
 
 class QuizResultService:
@@ -14,7 +14,7 @@ class QuizResultService:
         pass
 
 
-def get_quiz_data():
+def get_quiz_data() -> list[QuizDTO]:
     load_data_if_not_loaded()
     return quiz_memorization
 

@@ -8,7 +8,9 @@
 <h1>Опросы</h1>
 <ul>
     {% for quiz in quizzes %}
-        <li>{{ quiz.title }}</li>
+        <li>
+            <a href="{% url 'quiz_detailed' quiz.uuid %}">{{ quiz.title }}</a>
+        </li>
     {% endfor %}
 </ul>
 </body>
