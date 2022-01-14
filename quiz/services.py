@@ -1,5 +1,4 @@
 import json
-import uuid
 
 from .dto import QuizDTO, AnswersDTO, QuestionDTO, ChoiceDTO
 
@@ -24,17 +23,13 @@ def load_data_quiz_json():
         return json.load(quiz_json)
 
 
-def parse_quiz(title, questions):
-    return QuizDTO(generate_uuid(), title, [parse_question(**raw_question) for raw_question in questions])
+def parse_quiz(uuid, title, questions):
+    return QuizDTO(uuid, title, [parse_question(**raw_question) for raw_question in questions])
 
 
-def parse_question(text, choices):
-    return QuestionDTO(generate_uuid(), text, [parse_choice(**raw_choice) for raw_choice in choices])
+def parse_question(uuid, text, choices):
+    return QuestionDTO(uuid, text, [parse_choice(**raw_choice) for raw_choice in choices])
 
 
-def parse_choice(text, is_correct):
-    return ChoiceDTO(generate_uuid(), text, is_correct)
-
-
-def generate_uuid():
-    return str(uuid.uuid4())
+def parse_choice(**kwargs):
+    return ChoiceDTO(**kwargs)

@@ -1,10 +1,13 @@
 {
+  "uuid": "43279614-4e2f-44b7-80df-ec36b8c81da8",
   "title": "Some cool quiz",
   "questions": [
     {
+      "uuid": "68e3ef15-02d6-4a71-961c-b067cf688908",
       "text": "Some cool question text",
       "choices": [
         {
+          "uuid": "52d88d6b-2099-4b9d-a1c1-8867e3be265b",
           "text": "Some cool choice text",
           "is_correct": false
         }
