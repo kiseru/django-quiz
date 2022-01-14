@@ -13,9 +13,8 @@ class QuizResultService:
 
 
 def get_quiz_data():
-    raw_quiz = load_data_quiz_json()
-    quiz = parse_quiz(**raw_quiz)
-    return quiz
+    raw_quizzes = load_data_quiz_json()
+    return [parse_quiz(**raw_quiz) for raw_quiz in raw_quizzes]
 
 
 def load_data_quiz_json():

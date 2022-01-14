@@ -5,14 +5,11 @@
     <title>Django Quiz</title>
 </head>
 <body>
-<h2>{{ quiz.title }}</h2>
-{% for question in quiz.questions %}
-    <h3>{{ question.text }}</h3>
-    <ul>
-        {% for choice in question.choices %}
-            <li>{{ choice.text }}</li>
-        {% endfor %}
-    </ul>
-{% endfor %}
+<h1>Опрос</h1>
+<ul>
+    {% for quiz in object_list %}
+        <li>{{ quiz.title }}</li>
+    {% endfor %}
+</ul>
 </body>
 </html>
