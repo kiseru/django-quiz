@@ -9,5 +9,9 @@
 </head>
 <body>
 <h1>{{ quiz.title }}</h1>
+<h2>{{ question.text }}</h2>
+{% for choice in question.choices %}
+    <p>{{ choice.text }}</p>
+{% endfor %}
 </body>
 </html>
