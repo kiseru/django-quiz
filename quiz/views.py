@@ -8,7 +8,6 @@ class QuizListView(TemplateView):
     template_name = "quiz/index.html"
 
     def get_context_data(self, **kwargs):
-        print(get_quiz_data())
         return {"quizzes": get_quiz_data()}
 
 
