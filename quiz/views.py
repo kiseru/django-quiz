@@ -38,5 +38,5 @@ class QuizDetailView(TemplateView):
             self.request.session["question_index"] = 0
 
     def post(self, request, uuid):
-        print(request.POST['test'])
+        print(request.POST)
         return redirect('quiz_detailed', uuid)

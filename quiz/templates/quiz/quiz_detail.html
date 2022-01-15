@@ -13,9 +13,10 @@
 <form action="{% url "quiz_detailed" quiz.uuid %}" method="post">
     {% csrf_token %}
     {% for choice in question.choices %}
-        <p>{{ choice.text }}</p>
+        <p>
+            <label><input type="checkbox" name="answers" value="{{ choice.uuid }}">{{ choice.text }}</label>
+        </p>
     {% endfor %}
-    <input type="hidden" name="test" value="test"/>
     <button type="submit">Ответить</button>
 </form>
 </body>
