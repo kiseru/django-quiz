@@ -1,4 +1,5 @@
-from django.http import Http404
+from django.http import Http404, HttpRequest
+from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 from quiz.services import get_quiz_data
@@ -35,3 +36,7 @@ class QuizDetailView(TemplateView):
     def check_has_question_id(self):
         if "question_index" not in self.request.session:
             self.request.session["question_index"] = 0
+
+    def post(self, request, uuid):
+        print(request.POST['test'])
+        return redirect('quiz_detailed', uuid)

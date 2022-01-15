@@ -10,8 +10,13 @@
 <body>
 <h1>{{ quiz.title }}</h1>
 <h2>{{ question.text }}</h2>
-{% for choice in question.choices %}
-    <p>{{ choice.text }}</p>
-{% endfor %}
+<form action="{% url "quiz_detailed" quiz.uuid %}" method="post">
+    {% csrf_token %}
+    {% for choice in question.choices %}
+        <p>{{ choice.text }}</p>
+    {% endfor %}
+    <input type="hidden" name="test" value="test"/>
+    <button type="submit">Ответить</button>
+</form>
 </body>
 </html>
