@@ -31,8 +31,7 @@ class QuizDetailView(TemplateView):
         return self.render_to_response({
             "quiz": quiz,
             "question": self.get_question(quiz),
-        }
-        )
+        })
 
     def get_question(self, quiz):
         self.check_has_question_id()
