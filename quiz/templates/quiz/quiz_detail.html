@@ -15,9 +15,10 @@
     <input type="hidden" name="question_uuid" value="{{ question.uuid }}"/>
     {% for choice in question.choices %}
         <label>
-        {{ choice.text }}
-        <input type="checkbox" name="answers" value="{{ choice.uuid }}"/>
+            <input type="checkbox" name="answers" value="{{ choice.uuid }}"/>
+            {{ choice.text }}
         </label>
+        <br/>
     {% endfor %}
     <button type="submit">Ответить</button>
 </form>

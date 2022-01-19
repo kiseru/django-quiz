@@ -11,7 +11,19 @@ class QuizResultService:
         self.answers_dto = answers_dto
 
     def get_result(self) -> float:
-        pass
+        questions_count = len(self.quiz_dto.questions)
+        right_answers_count = 0
+        for question in self.quiz_dto.questions:
+            for answer in self.answers_dto.answers:
+                if answer.question_uuid == question.uuid:
+                    flag = True
+                    for choice_uuid in answer.choices:
+                        for choice in question.choices:
+                            if flag and choice.uuid == choice_uuid and not choice.is_correct:
+                                flag = False
+                    if flag:
+                        right_answers_count += 1
+        return right_answers_count / questions_count
 
 
 def get_quiz_data() -> list[QuizDTO]:

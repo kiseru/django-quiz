@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('quiz/', views.QuizListView.as_view(), name='quiz_list'),
     path('quiz/<str:uuid>', views.QuizDetailView.as_view(), name='quiz_detailed'),
+    path('quiz/<str:uuid>/result', views.QuizResultView.as_view(), name='quiz_result'),
 ]

@@ -26,14 +26,14 @@ class QuizDetailView(TemplateView):
         quizzes = get_quiz_data()
         filtered_quizzes = [quiz for quiz in quizzes if quiz.uuid == kwargs["uuid"]]
         quiz = filtered_quizzes[0]
+        if self.request.session["question_index"] >= len(quiz.questions):
+            return redirect("quiz_result", kwargs["uuid"])
         check_is_empty(quizzes)
         question = self.get_question(quiz)
         context = {
             "quiz": quiz,
             "question": question,
         }
-        if self.request.session["question_index"] >= len(question.choices):
-            pass
         return self.render_to_response(context)
 
     def get_question(self, quiz):
@@ -62,3 +62,23 @@ class QuizDetailView(TemplateView):
         self.request.session["answers"] = answers
         self.request.session["question_index"] += 1
         return redirect('quiz_detailed', uuid)
+
+
+class QuizResultView(TemplateView):
+    template_name = "quiz/quiz_result.html"
+
+    def get(self, request, *args, **kwargs):
+        answers = [AnswerDTO(answer["question_uuid"], answer["answers"]) for answer in request.session["answers"]]
+        quizzes = get_quiz_data()
+        filtered_quizzes = [quiz for quiz in quizzes if quiz.uuid == kwargs["uuid"]]
+        quiz = filtered_quizzes[0]
+        if len(self.request.session["answers"]) != len(quiz.questions):
+            return redirect("quiz_detailed", kwargs["uuid"])
+        answers = AnswersDTO(quiz.uuid, answers)
+        quiz_result_service = QuizResultService(quiz, answers)
+        result = quiz_result_service.get_result()
+        self.request.session["question_index"] = 0
+        self.request.session["answers"] = []
+        return self.render_to_response({
+            "result": result,
+        })
