@@ -11,4 +11,7 @@
             <h3 class="text-center">Ваш результат: {{ result }}%</h3>
         </div>
     </div>
+    <div class="d-flex justify-content-center">
+        <a href="{% url "quiz_list" %}" class="btn btn-light" role="button">Пройти новый опрос</a>
+    </div>
 {% endblock %}
