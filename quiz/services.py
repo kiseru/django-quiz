@@ -26,6 +26,12 @@ class QuizResultService:
         return right_answers_count / questions_count
 
 
+def get_quiz(uuid: str) -> QuizDTO:
+    quizzes = get_quiz_data()
+    filtered_quizzes = [quiz for quiz in quizzes if quiz.uuid == uuid]
+    return filtered_quizzes[0]
+
+
 def get_quiz_data() -> list[QuizDTO]:
     load_data_if_not_loaded()
     return quiz_memorization
