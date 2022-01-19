@@ -1,10 +1,12 @@
-from django.core.handlers.wsgi import WSGIRequest
 from django.http import Http404
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 from quiz.dto import AnswersDTO, AnswerDTO
 from quiz.services import get_quiz_data, QuizResultService
+
+ANSWERS_KEY = "answers"
+QUESTION_INDEX_KEY = "question_index"
 
 
 class QuizListView(TemplateView):
@@ -26,7 +28,7 @@ class QuizDetailView(TemplateView):
         quizzes = get_quiz_data()
         filtered_quizzes = [quiz for quiz in quizzes if quiz.uuid == kwargs["uuid"]]
         quiz = filtered_quizzes[0]
-        if self.request.session["question_index"] >= len(quiz.questions):
+        if self.request.session[QUESTION_INDEX_KEY] >= len(quiz.questions):
             return redirect("quiz_result", kwargs["uuid"])
         check_is_empty(quizzes)
         question = self.get_question(quiz)
@@ -38,11 +40,11 @@ class QuizDetailView(TemplateView):
 
     def get_question(self, quiz):
         self.check_has_question_id()
-        return quiz.questions[self.request.session["question_index"]]
+        return quiz.questions[self.request.session[QUESTION_INDEX_KEY]]
 
     def check_has_question_id(self):
-        if "question_index" not in self.request.session:
-            self.request.session["question_index"] = 0
+        if QUESTION_INDEX_KEY not in self.request.session:
+            self.request.session[QUESTION_INDEX_KEY] = 0
 
     def post(self, request, uuid):
         question_uuid = request.POST["question_uuid"]
@@ -50,17 +52,17 @@ class QuizDetailView(TemplateView):
         if len(answers) == 0:
             return redirect('quiz_detailed', uuid)
 
-        if "answers" not in self.request.session:
-            self.request.session["answers"] = []
+        if ANSWERS_KEY not in self.request.session:
+            self.request.session[ANSWERS_KEY] = []
 
         new_answer = {
             "question_uuid": question_uuid,
             "answers": answers,
         }
-        answers = [answer for answer in self.request.session["answers"] if answer["question_uuid"] != question_uuid]
+        answers = [answer for answer in self.request.session[ANSWERS_KEY] if answer["question_uuid"] != question_uuid]
         answers.append(new_answer)
-        self.request.session["answers"] = answers
-        self.request.session["question_index"] += 1
+        self.request.session[ANSWERS_KEY] = answers
+        self.request.session[QUESTION_INDEX_KEY] += 1
         return redirect('quiz_detailed', uuid)
 
 
@@ -68,17 +70,17 @@ class QuizResultView(TemplateView):
     template_name = "quiz/quiz_result.html"
 
     def get(self, request, *args, **kwargs):
-        answers = [AnswerDTO(answer["question_uuid"], answer["answers"]) for answer in request.session["answers"]]
+        answers = [AnswerDTO(answer["question_uuid"], answer["answers"]) for answer in request.session[ANSWERS_KEY]]
         quizzes = get_quiz_data()
         filtered_quizzes = [quiz for quiz in quizzes if quiz.uuid == kwargs["uuid"]]
         quiz = filtered_quizzes[0]
-        if len(self.request.session["answers"]) != len(quiz.questions):
+        if len(self.request.session[ANSWERS_KEY]) != len(quiz.questions):
             return redirect("quiz_detailed", kwargs["uuid"])
         answers = AnswersDTO(quiz.uuid, answers)
         quiz_result_service = QuizResultService(quiz, answers)
         result = quiz_result_service.get_result()
-        self.request.session["question_index"] = 0
-        self.request.session["answers"] = []
+        self.request.session[QUESTION_INDEX_KEY] = 0
+        self.request.session[ANSWERS_KEY] = []
         return self.render_to_response({
             "result": int(result * 100),
             "quiz_name": quiz.title,
