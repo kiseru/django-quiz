@@ -86,23 +86,23 @@
         "text": "Какие предметы и оборудование НEЛЬЗЯ установить в \"Доме теплых ветров\"?",
         "choices": [
           {
-            "uuid": "7b8d11e6-9577-4f4c-9a99-eea9c7be71d2",
-            "text": "Пентаграмма душ",
-            "is_correct": false
-          },
-          {
-            "uuid": "6140a603-c941-43fa-b5fb-4b77bbe99f09",
-            "text": "Манекен",
-            "is_correct": false
-          },
-          {
             "uuid": "341c787b-58be-4a0e-ad43-a29cee674eff",
             "text": "Алхимическая лаборатория",
-            "is_correct": true
+            "is_correct": false
           },
           {
             "uuid": "d79c5107-0d85-484a-b4e8-6285c293a758",
             "text": "Стенд для оружия",
+            "is_correct": false
+          },
+          {
+            "uuid": "7b8d11e6-9577-4f4c-9a99-eea9c7be71d2",
+            "text": "Пентаграмма душ",
+            "is_correct": true
+          },
+          {
+            "uuid": "6140a603-c941-43fa-b5fb-4b77bbe99f09",
+            "text": "Манекен",
             "is_correct": true
           }
         ]
