@@ -1,8 +1,10 @@
-from django.http import Http404, HttpRequest
+from django.core.handlers.wsgi import WSGIRequest
+from django.http import Http404
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from quiz.services import get_quiz_data
+from quiz.dto import AnswersDTO, AnswerDTO
+from quiz.services import get_quiz_data, QuizResultService
 
 
 class QuizListView(TemplateView):
@@ -20,14 +22,19 @@ def check_is_empty(quizzes):
 class QuizDetailView(TemplateView):
     template_name = "quiz/quiz_detail.html"
 
-    def get_context_data(self, uuid):
+    def get(self, request, *args, **kwargs):
         quizzes = get_quiz_data()
-        filtered_quizzes = [quiz for quiz in quizzes if quiz.uuid == uuid]
+        filtered_quizzes = [quiz for quiz in quizzes if quiz.uuid == kwargs["uuid"]]
+        quiz = filtered_quizzes[0]
         check_is_empty(quizzes)
-        return {
-            "quiz": filtered_quizzes[0],
-            "question": self.get_question(filtered_quizzes[0]),
+        question = self.get_question(quiz)
+        context = {
+            "quiz": quiz,
+            "question": question,
         }
+        if self.request.session["question_index"] >= len(question.choices):
+            pass
+        return self.render_to_response(context)
 
     def get_question(self, quiz):
         self.check_has_question_id()
@@ -38,5 +45,20 @@ class QuizDetailView(TemplateView):
             self.request.session["question_index"] = 0
 
     def post(self, request, uuid):
-        print(request.POST)
+        question_uuid = request.POST["question_uuid"]
+        answers = request.POST.getlist("answers")
+        if len(answers) == 0:
+            return redirect('quiz_detailed', uuid)
+
+        if "answers" not in self.request.session:
+            self.request.session["answers"] = []
+
+        new_answer = {
+            "question_uuid": question_uuid,
+            "answers": answers,
+        }
+        answers = [answer for answer in self.request.session["answers"] if answer["question_uuid"] != question_uuid]
+        answers.append(new_answer)
+        self.request.session["answers"] = answers
+        self.request.session["question_index"] += 1
         return redirect('quiz_detailed', uuid)
