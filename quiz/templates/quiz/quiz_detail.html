@@ -1,26 +1,42 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-<h1>{{ quiz.title }}</h1>
-<h2>{{ question.text }}</h2>
-<form action="{% url "quiz_detailed" quiz.uuid %}" method="post">
-    {% csrf_token %}
-    <input type="hidden" name="question_uuid" value="{{ question.uuid }}"/>
-    {% for choice in question.choices %}
-        <label>
-            <input type="checkbox" name="answers" value="{{ choice.uuid }}"/>
-            {{ choice.text }}
-        </label>
-        <br/>
-    {% endfor %}
-    <button type="submit">Ответить</button>
-</form>
-</body>
-</html>
+{% extends "quiz/base.html" %}
+
+{% block app %}
+    <div class="row">
+        <div class="col-12 text-center">
+            <h2>Опрос: {{ quiz.title }}</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 text-center">
+            <h3>Вопрос: {{ question.text }}</h3>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <form action="{% url "quiz_detailed" quiz.uuid %}"
+                  method="post">
+                <div class="d-flex justify-content-center">
+                    {% csrf_token %}
+                    <input type="hidden" name="question_uuid" value="{{ question.uuid }}"/>
+
+                    <div class="d-flex justify-content-center flex-column">
+                        {% for choice in question.choices %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="answers" value="{{ choice.uuid }}"
+                                       id="answer-{{ forloop.counter }}"/>
+                                <label class="form-check-label"
+                                       for="answer-{{ forloop.counter }}">{{ choice.text }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center mt-3">
+                    <button type="submit" class="btn btn-light">Ответить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

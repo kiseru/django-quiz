@@ -80,5 +80,6 @@ class QuizResultView(TemplateView):
         self.request.session["question_index"] = 0
         self.request.session["answers"] = []
         return self.render_to_response({
-            "result": result,
+            "result": int(result * 100),
+            "quiz_name": quiz.title,
         })

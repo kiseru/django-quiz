@@ -1,17 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Django Quiz</title>
-</head>
-<body>
-<h1>Опросы</h1>
-<ul>
-    {% for quiz in quizzes %}
-        <li>
-            <a href="{% url 'quiz_detailed' quiz.uuid %}">{{ quiz.title }}</a>
-        </li>
-    {% endfor %}
-</ul>
-</body>
-</html>
+{% extends "quiz/base.html" %}
+
+{% block app %}
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center">Опросы</h2>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-8">
+            <ul class="list-group">
+                {% for quiz in quizzes %}
+                    <li class="list-group-item">
+                        <a href="{% url 'quiz_detailed' quiz.uuid %}">{{ quiz.title }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
