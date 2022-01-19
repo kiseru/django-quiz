@@ -25,7 +25,7 @@ def load_data_if_not_loaded():
 
 
 def load_data_quiz_json():
-    with open('quiz.json') as quiz_json:
+    with open('quiz.json', encoding="utf-8") as quiz_json:
         global quiz_memorization
         quiz_memorization = [parse_quiz(**raw_quiz) for raw_quiz in json.load(quiz_json)]
 
